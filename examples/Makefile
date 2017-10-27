@@ -14,22 +14,25 @@ I2C_DRIVER = ../src/i2cdriver.c
 SPI_DRIVER = ../src/spidriver.c
 BIN_DIR    = bin
 
-all: i2c_htu21d spi_ad7390
+all: i2c_htu21d spi_ad7390 spi_MCP3903
 
 .c.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 i2cdriver.o: $(I2CDRIVER)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $(I2C_DRIVER) 
+	$(CC) $(CFLAGS) $(INCLUDES) -c $(I2C_DRIVER)
 
 spidriver.o: $(I2CDRIVER)
-	$(CC) $(CFLAGS) $(INCLUDES) -c $(SPI_DRIVER) 
+	$(CC) $(CFLAGS) $(INCLUDES) -c $(SPI_DRIVER)
 
 i2c_htu21d: i2c_htu21d.o i2cdriver.o
-	$(CC) -o $(BIN_DIR)/i2c_htu21d $^ 
+	$(CC) -o $(BIN_DIR)/i2c_htu21d $^
 
 spi_ad7390: spi_ad7390.o spidriver.o
-	$(CC) -o $(BIN_DIR)/spi_ad7390 $^ 
+	$(CC) -o $(BIN_DIR)/spi_ad7390 $^
+
+spi_MCP3903: spi_MCP3903.o spidriver.o
+	$(CC) -o $(BIN_DIR)/spi_MCP3903 $^
 
 clean:
 	rm -f *.o bin/*
